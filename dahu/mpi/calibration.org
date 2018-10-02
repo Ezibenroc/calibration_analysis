@@ -1,0 +1,709 @@
+* Calibration
+** Basic functions, data
+ #+begin_src R :results output :session *R* :exports both
+if(!require("plyr")) {
+    print("trying to install plyr")
+    install.packages("plyr", repos = "http://cran.r-project.org")
+    if(require(plyr)){
+        print("plyr installed and loaded")
+    } else {
+        stop("could not install plyr")
+    }
+}
+
+if(!require("ggplot2")){
+    print("trying to install ggplot2")
+    install.packages("ggplot2", repos = "http://cran.r-project.org")
+    if(require(ggplot2)){
+        print("ggplot2 installed and loaded")
+    } else {
+        stop("could not install ggplot2")
+    }
+}
+
+if(!require("XML")){
+    print("trying to install XML")
+    install.packages("XML", repos = "http://cran.r-project.org")
+    if(require(XML)){
+        print("XML installed and loaded")
+    } else {
+        stop("could not install XML")
+    }
+}
+ #+end_src
+
+ #+RESULTS:
+
+ #+begin_src R :results output :session *R* :exports both
+prefix = '/tmp/exp/exp'
+eager_threshold = 64000
+detached_threshold = 64000
+
+expected_bandwidth = 1e11/8
+expected_latency = 1e-6
+
+unzip('grenoble_2018-08-29_1808878.zip', exdir='/tmp')
+
+read_csv <- function(file) {
+  df <- read.csv(file, header=FALSE, strip.white=TRUE)
+  names(df) <- c("Op","Size","Start", "Duration")
+  df$Origin=file
+  df
+}
+
+remove_outliers <-function(duration, thres=outliers_threshold) {
+  qnt <- quantile(duration, probs=c(thres, 1-thres))
+  outliers <- ifelse((duration<qnt[1] | duration>qnt[2]), 1,0)
+  outliers
+}
+
+
+df_pingpong <- read_csv(paste0(prefix,"_PingPong.csv"))
+
+df_send <-  df_pingpong[df_pingpong$Op=="MPI_Send",]
+df_recvs <- df_pingpong[df_pingpong$Op=="MPI_Recv",]
+
+
+df_pingpong <- data.frame( Op = unique("PingPong"),
+                   Size = df_send$Size,
+                   Start = df_send$Start,
+                   Duration = df_recvs$Duration + df_send$Duration,
+                   Origin = unique(df_send$Origin))
+
+
+df_isend <- read_csv(paste0(prefix,"_Isend.csv"))
+df_recv <- read_csv(paste0(prefix,"_Recv.csv"))
+df_wtime <- read_csv(paste0(prefix,"_Wtime.csv"))
+df_test <- read_csv(paste0(prefix,"_Test.csv"))
+df_iprobe <- read_csv(paste0(prefix,"_Iprobe.csv"))
+
+#read breakpoint file
+options(stringsAsFactors = FALSE)
+
+bp = data.frame(Small=8133, Medium=15831, Asynchronous=33956, Detached=64000, Large=.Machine$integer.max)
+bp = read.table(text='
+Limit, Name
+8133, Small
+15831, Medium
+33956, Asynchronous
+64000, Detached
+2147483647, Large
+', sep=',', header=TRUE)
+v <- bp$Limit
+bp$LimitInf <- c(0,v[1:length(v)-1])
+bp$Name <- as.character(bp$Name)
+
+#Analysis Functions
+
+ classify_messages <- function(d) {
+    d$group=as.character("outliers")
+    for(i in (1:length(bp$Limit))) {
+        d[d$Size < bp[i,]$Limit & d$Size >= bp[i,]$LimitInf,]$group = bp[i,]$Name
+    }
+    d
+  }
+
+  compute_lm <- function(bp, d, zone,remove_sync=FALSE,remove_detached=FALSE) {
+    if(remove_sync) {
+       group_list = bp[bp$Limit<=detached_threshold,]$Name
+    } else {
+       group_list = bp$Name
+    }
+    if(remove_detached) {
+       group_list = bp[bp$Limit<=detached_threshold,]$Name
+    }
+    mylm <- ddply(d[d$group %in% (group_list),],
+                   c("group"), function(x) {
+                model <- lm(Duration ~ Size, data = x)
+                coef(model)
+                })
+    intercept_label = paste0(zone,"Intercept")
+    size_label = paste0(zone,"Size")
+    bp[,intercept_label] = 0
+    bp[,size_label] = 0
+
+    for(i in (mylm$group)) {
+       bp[bp$Name == i,intercept_label] = mylm[mylm$group == i,"(Intercept)"]
+       bp[bp$Name == i,size_label] = mylm[mylm$group == i,"Size"]
+    }
+    bp
+  }
+
+  display_lm <- function(d,remove_sync=FALSE,remove_detached=FALSE) {
+    if(remove_sync) {
+       group_list = bp[bp$Limit<=detached_threshold,]$Name
+    } else {
+       group_list = bp$Name
+    }
+    if(remove_detached) {
+       group_list = bp[bp$Limit<detached_threshold,]$Name
+    }
+    for(i in (1:length(group_list))) {
+       print(paste0("----- ",bp[i,]$Name,"-----"))
+       lim <- bp[i,]$Limit
+       print(summary(lm(Duration ~ Size, data = d[d$group==bp[bp$Limit==lim,]$Name,])))
+    }
+  }
+
+
+#Plotting functions
+
+  comm_function <- function(x,zone) {
+        bp[x>=bp$LimitInf & x<bp$Limit,paste0(zone,"Intercept")] +
+    x * bp[x>=bp$LimitInf & x<bp$Limit,paste0(zone,"Size")]
+  }
+
+
+  fancy_plot <- function(d,zone, title) {
+    d$values_test <- sapply(d$Size,function(x) {comm_function(x,zone)})
+
+    pl <- ggplot(data=d, aes(x=Size,y=Duration,color=group))
+    pl <- pl + geom_vline(xintercept=bp$Limit, colour="gray", linetype = "longdash")  +  annotate("text", x=bp$Limit, y=seq(.1*max(d$Duration),2*max(d$Duration),length.out=length(bp$Limit)), label=bp$Name)
+    pl <- pl + geom_point(alpha=.3)
+    pl <- pl + geom_line(aes(x=Size,y=values_test), colour="black")
+    pl <- pl + scale_x_log10(limits=c(1, max(d$Size))) + scale_y_log10()
+    return(pl + ylab(paste0(title, " duration (seconds)")) + xlab("Message size (bytes)") + theme_bw() + scale_alpha(guide = "none"))
+  }
+ #+end_src
+
+ #+RESULTS:
+** MPI_Send
+ #+begin_src R :results output :session *R* :exports both
+df_send <- classify_messages(df_send)
+bp <- compute_lm(bp,df_send,"Os",remove_sync=TRUE)
+display_lm(df_send,remove_sync=TRUE)
+ #+end_src
+
+ #+RESULTS:
+ #+begin_example
+[1] "-----  Small-----"
+
+Call:
+lm(formula = Duration ~ Size, data = d[d$group == bp[bp$Limit == 
+    lim, ]$Name, ])
+
+Residuals:
+       Min         1Q     Median         3Q        Max 
+-3.208e-07 -1.354e-07 -9.600e-08 -8.900e-09  1.567e-05 
+
+Coefficients:
+             Estimate Std. Error t value Pr(>|t|)    
+(Intercept) 2.966e-07  1.004e-09   295.5   <2e-16 ***
+Size        9.631e-11  3.825e-13   251.8   <2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 3.366e-07 on 181998 degrees of freedom
+Multiple R-squared:  0.2584,	Adjusted R-squared:  0.2583 
+F-statistic: 6.34e+04 on 1 and 181998 DF,  p-value: < 2.2e-16
+
+[1] "-----  Medium-----"
+
+Call:
+lm(formula = Duration ~ Size, data = d[d$group == bp[bp$Limit == 
+    lim, ]$Name, ])
+
+Residuals:
+       Min         1Q     Median         3Q        Max 
+-3.904e-06 -4.335e-07 -2.593e-07  8.700e-08  1.977e-05 
+
+Coefficients:
+             Estimate Std. Error t value Pr(>|t|)    
+(Intercept) 3.390e-06  4.884e-08   69.41   <2e-16 ***
+Size        1.560e-10  4.173e-12   37.39   <2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 1.418e-06 on 22998 degrees of freedom
+Multiple R-squared:  0.0573,	Adjusted R-squared:  0.05726 
+F-statistic:  1398 on 1 and 22998 DF,  p-value: < 2.2e-16
+
+[1] "-----  Asynchronous-----"
+
+Call:
+lm(formula = Duration ~ Size, data = d[d$group == bp[bp$Limit == 
+    lim, ]$Name, ])
+
+Residuals:
+       Min         1Q     Median         3Q        Max 
+-9.022e-07 -5.593e-07 -3.710e-07  3.058e-07  1.950e-05 
+
+Coefficients:
+             Estimate Std. Error t value Pr(>|t|)    
+(Intercept) 3.910e-06  3.374e-08  115.89   <2e-16 ***
+Size        1.097e-10  1.351e-12   81.21   <2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 1.223e-06 on 28498 degrees of freedom
+Multiple R-squared:  0.1879,	Adjusted R-squared:  0.1879 
+F-statistic:  6596 on 1 and 28498 DF,  p-value: < 2.2e-16
+
+[1] "-----  Detached-----"
+
+Call:
+lm(formula = Duration ~ Size, data = d[d$group == bp[bp$Limit == 
+    lim, ]$Name, ])
+
+Residuals:
+       Min         1Q     Median         3Q        Max 
+-5.553e-06 -1.680e-06 -1.351e-06 -9.062e-07  2.343e-05 
+
+Coefficients:
+             Estimate Std. Error t value Pr(>|t|)    
+(Intercept) 7.661e-06  1.114e-07   68.74   <2e-16 ***
+Size        1.426e-10  2.228e-12   63.99   <2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 3.468e-06 on 26498 degrees of freedom
+Multiple R-squared:  0.1339,	Adjusted R-squared:  0.1338 
+F-statistic:  4095 on 1 and 26498 DF,  p-value: < 2.2e-16
+ #+end_example
+
+ #+begin_src R :results output graphics :file (org-babel-temp-file "figure" ".png") :exports both :width 600 :height 400 :session *R* 
+fancy_plot(df_send[df_send$group!="outliers",],"Os", "MPI_Send")
+ #+end_src
+
+ #+RESULTS:
+ [[file:/tmp/babel-uOPXLB/figureECi7oZ.png]]
+** MPI_Isend
+#+begin_src R :results output :session *R* :exports both
+df_isend <- classify_messages(df_isend)
+# We want to inject timings in all MPI_Isend, even the large ones. Hence remove_sync=F
+bp <- compute_lm(bp,df_isend,"Ois",remove_sync=F)
+display_lm(df_isend,remove_sync=T)
+#+end_src
+
+#+RESULTS:
+#+begin_example
+[1] "-----  Small-----"
+
+Call:
+lm(formula = Duration ~ Size, data = d[d$group == bp[bp$Limit == 
+    lim, ]$Name, ])
+
+Residuals:
+       Min         1Q     Median         3Q        Max 
+-6.760e-07 -4.990e-07 -4.610e-07 -3.350e-07  6.269e-05 
+
+Coefficients:
+             Estimate Std. Error t value Pr(>|t|)    
+(Intercept) 6.931e-07  9.644e-09   71.87   <2e-16 ***
+Size        7.051e-11  3.675e-12   19.18   <2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 3.234e-06 on 181998 degrees of freedom
+Multiple R-squared:  0.002018,	Adjusted R-squared:  0.002013 
+F-statistic:   368 on 1 and 181998 DF,  p-value: < 2.2e-16
+
+[1] "-----  Medium-----"
+
+Call:
+lm(formula = Duration ~ Size, data = d[d$group == bp[bp$Limit == 
+    lim, ]$Name, ])
+
+Residuals:
+       Min         1Q     Median         3Q        Max 
+-8.860e-07 -6.800e-07 -4.780e-07 -3.030e-07  5.672e-05 
+
+Coefficients:
+             Estimate Std. Error t value Pr(>|t|)    
+(Intercept) 3.555e-07  1.113e-07   3.194  0.00141 ** 
+Size        1.246e-10  9.510e-12  13.097  < 2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 3.231e-06 on 22998 degrees of freedom
+Multiple R-squared:  0.007403,	Adjusted R-squared:  0.00736 
+F-statistic: 171.5 on 1 and 22998 DF,  p-value: < 2.2e-16
+
+[1] "-----  Asynchronous-----"
+
+Call:
+lm(formula = Duration ~ Size, data = d[d$group == bp[bp$Limit == 
+    lim, ]$Name, ])
+
+Residuals:
+       Min         1Q     Median         3Q        Max 
+-2.060e-06 -1.292e-06 -1.144e-06 -8.530e-07  7.249e-05 
+
+Coefficients:
+             Estimate Std. Error t value Pr(>|t|)    
+(Intercept) 2.814e-06  1.045e-07   26.93   <2e-16 ***
+Size        4.700e-11  4.186e-12   11.23   <2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 3.788e-06 on 28498 degrees of freedom
+Multiple R-squared:  0.004404,	Adjusted R-squared:  0.004369 
+F-statistic: 126.1 on 1 and 28498 DF,  p-value: < 2.2e-16
+
+[1] "-----  Detached-----"
+
+Call:
+lm(formula = Duration ~ Size, data = d[d$group == bp[bp$Limit == 
+    lim, ]$Name, ])
+
+Residuals:
+       Min         1Q     Median         3Q        Max 
+-1.842e-06 -1.426e-06 -1.302e-06 -1.034e-06  5.681e-05 
+
+Coefficients:
+             Estimate Std. Error t value Pr(>|t|)    
+(Intercept) 3.176e-06  1.255e-07   25.30   <2e-16 ***
+Size        3.217e-11  2.509e-12   12.82   <2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 3.906e-06 on 26498 degrees of freedom
+Multiple R-squared:  0.006164,	Adjusted R-squared:  0.006127 
+F-statistic: 164.3 on 1 and 26498 DF,  p-value: < 2.2e-16
+#+end_example
+
+#+begin_src R :results output graphics :file (org-babel-temp-file "figure" ".png") :exports both :width 600 :height 400 :session *R* 
+fancy_plot(df_isend[df_isend$group!="outliers",],"Ois", "MPI_Isend")
+#+end_src
+
+#+RESULTS:
+[[file:/tmp/babel-uOPXLB/figureaK0aUg.png]]
+** MPI_Recv
+#+begin_src R :results output :session *R* :exports both
+df_recv <- classify_messages(df_recv)
+bp <- compute_lm(bp,df_recv,"Or",remove_detached=TRUE)
+display_lm(df_recv,remove_detached=TRUE)
+#+end_src
+
+#+RESULTS:
+#+begin_example
+[1] "-----  Small-----"
+
+Call:
+lm(formula = Duration ~ Size, data = d[d$group == bp[bp$Limit == 
+    lim, ]$Name, ])
+
+Residuals:
+       Min         1Q     Median         3Q        Max 
+-7.470e-07 -4.213e-07 -3.698e-07  7.831e-07  2.185e-05 
+
+Coefficients:
+             Estimate Std. Error t value Pr(>|t|)    
+(Intercept) 1.376e-06  2.333e-09  589.61   <2e-16 ***
+Size        8.444e-11  8.891e-13   94.97   <2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 7.824e-07 on 181998 degrees of freedom
+Multiple R-squared:  0.04722,	Adjusted R-squared:  0.04722 
+F-statistic:  9020 on 1 and 181998 DF,  p-value: < 2.2e-16
+
+[1] "-----  Medium-----"
+
+Call:
+lm(formula = Duration ~ Size, data = d[d$group == bp[bp$Limit == 
+    lim, ]$Name, ])
+
+Residuals:
+       Min         1Q     Median         3Q        Max 
+-9.912e-07 -6.518e-07 -5.480e-07  1.169e-06  1.972e-05 
+
+Coefficients:
+             Estimate Std. Error t value Pr(>|t|)    
+(Intercept) 1.092e-06  3.738e-08   29.22   <2e-16 ***
+Size        1.017e-10  3.194e-12   31.85   <2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 1.085e-06 on 22998 degrees of freedom
+Multiple R-squared:  0.04224,	Adjusted R-squared:  0.0422 
+F-statistic:  1014 on 1 and 22998 DF,  p-value: < 2.2e-16
+
+[1] "-----  Asynchronous-----"
+
+Call:
+lm(formula = Duration ~ Size, data = d[d$group == bp[bp$Limit == 
+    lim, ]$Name, ])
+
+Residuals:
+       Min         1Q     Median         3Q        Max 
+-1.912e-06 -1.160e-06 -9.248e-07  1.741e-06  2.017e-05 
+
+Coefficients:
+             Estimate Std. Error t value Pr(>|t|)    
+(Intercept) 1.131e-06  4.633e-08   24.42   <2e-16 ***
+Size        1.018e-10  1.856e-12   54.88   <2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 1.679e-06 on 28498 degrees of freedom
+Multiple R-squared:  0.09557,	Adjusted R-squared:  0.09554 
+F-statistic:  3011 on 1 and 28498 DF,  p-value: < 2.2e-16
+#+end_example
+
+#+begin_src R :results output graphics :file (org-babel-temp-file "figure" ".png") :exports both :width 600 :height 400 :session *R* 
+fancy_plot(df_recv[df_recv$group!="outliers",],"Or", "MPI_Recv")
+#+end_src
+
+#+RESULTS:
+[[file:/tmp/babel-uOPXLB/figureYQuijj.png]]
+** Pingpong
+#+begin_src R :results output :session *R* :exports both
+df_pingpong <- classify_messages(df_pingpong)
+bp <- compute_lm(bp,df_pingpong,"PingPong")
+display_lm(df_pingpong)
+#+end_src
+
+#+RESULTS:
+#+begin_example
+[1] "-----  Small-----"
+
+Call:
+lm(formula = Duration ~ Size, data = d[d$group == bp[bp$Limit == 
+    lim, ]$Name, ])
+
+Residuals:
+       Min         1Q     Median         3Q        Max 
+-8.600e-07 -3.770e-07 -1.560e-07  9.200e-08  4.799e-05 
+
+Coefficients:
+             Estimate Std. Error t value Pr(>|t|)    
+(Intercept) 2.994e-06  2.232e-09  1341.0   <2e-16 ***
+Size        4.924e-10  8.508e-13   578.7   <2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 7.486e-07 on 181998 degrees of freedom
+Multiple R-squared:  0.6479,	Adjusted R-squared:  0.6479 
+F-statistic: 3.349e+05 on 1 and 181998 DF,  p-value: < 2.2e-16
+
+[1] "-----  Medium-----"
+
+Call:
+lm(formula = Duration ~ Size, data = d[d$group == bp[bp$Limit == 
+    lim, ]$Name, ])
+
+Residuals:
+       Min         1Q     Median         3Q        Max 
+-1.656e-06 -9.997e-07 -6.823e-07  9.872e-07  2.116e-05 
+
+Coefficients:
+             Estimate Std. Error t value Pr(>|t|)    
+(Intercept) 5.788e-06  6.042e-08   95.78   <2e-16 ***
+Size        2.502e-10  5.162e-12   48.48   <2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 1.754e-06 on 22998 degrees of freedom
+Multiple R-squared:  0.0927,	Adjusted R-squared:  0.09266 
+F-statistic:  2350 on 1 and 22998 DF,  p-value: < 2.2e-16
+
+[1] "-----  Asynchronous-----"
+
+Call:
+lm(formula = Duration ~ Size, data = d[d$group == bp[bp$Limit == 
+    lim, ]$Name, ])
+
+Residuals:
+       Min         1Q     Median         3Q        Max 
+-2.071e-06 -1.185e-06 -8.377e-07  1.159e-06  2.143e-05 
+
+Coefficients:
+             Estimate Std. Error t value Pr(>|t|)    
+(Intercept) 6.082e-06  5.250e-08   115.8   <2e-16 ***
+Size        2.245e-10  2.103e-12   106.8   <2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 1.903e-06 on 28498 degrees of freedom
+Multiple R-squared:  0.2857,	Adjusted R-squared:  0.2857 
+F-statistic: 1.14e+04 on 1 and 28498 DF,  p-value: < 2.2e-16
+
+[1] "-----  Detached-----"
+
+Call:
+lm(formula = Duration ~ Size, data = d[d$group == bp[bp$Limit == 
+    lim, ]$Name, ])
+
+Residuals:
+       Min         1Q     Median         3Q        Max 
+-8.239e-06 -1.963e-06 -1.498e-06 -8.504e-07  2.672e-05 
+
+Coefficients:
+             Estimate Std. Error t value Pr(>|t|)    
+(Intercept) 1.175e-05  1.279e-07   91.86   <2e-16 ***
+Size        2.489e-10  2.557e-12   97.31   <2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 3.981e-06 on 26498 degrees of freedom
+Multiple R-squared:  0.2633,	Adjusted R-squared:  0.2633 
+F-statistic:  9470 on 1 and 26498 DF,  p-value: < 2.2e-16
+
+[1] "-----  Large-----"
+
+Call:
+lm(formula = Duration ~ Size, data = d[d$group == bp[bp$Limit == 
+    lim, ]$Name, ])
+
+Residuals:
+       Min         1Q     Median         3Q        Max 
+-6.373e-06 -3.197e-06 -2.250e-06 -9.430e-07  6.748e-05 
+
+Coefficients:
+             Estimate Std. Error t value Pr(>|t|)    
+(Intercept) 2.585e-05  3.871e-08   667.8   <2e-16 ***
+Size        1.621e-10  9.783e-14  1657.3   <2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 7.478e-06 on 101998 degrees of freedom
+Multiple R-squared:  0.9642,	Adjusted R-squared:  0.9642 
+F-statistic: 2.747e+06 on 1 and 101998 DF,  p-value: < 2.2e-16
+#+end_example
+
+#+begin_src R :results output graphics :file (org-babel-temp-file "figure" ".png") :exports both :width 600 :height 400 :session *R* 
+fancy_plot(df_pingpong[df_pingpong$group!="outliers",],"PingPong","PingPong")
+#+end_src
+
+#+RESULTS:
+[[file:/tmp/babel-uOPXLB/figure8DBPMK.png]]
+
+#+begin_src R :results output :session *R* :exports both
+bp$DelayIntercept <- (bp$PingPongIntercept-2*bp$OrIntercept)/2
+bp$DelaySize <- (bp$PingPongSize-2*bp$OrSize)/2
+
+df_pingpong$values_test2 <- sapply(df_pingpong$Size,
+    function(x) {comm_function(x,"Delay")})
+
+df_pingpong$Duration2 = (df_pingpong$Duration -
+   2*sapply(df_pingpong$Size,function(x) {comm_function(x,"Or")}))/2
+#+end_src
+
+#+RESULTS:
+
+#+begin_src R :results output graphics :file (org-babel-temp-file "figure" ".png") :exports both :width 600 :height 400 :session *R* 
+pl <- ggplot(data=df_pingpong, aes(x=Size,y=Duration2,color=group))+geom_point(alpha=.2)
+pl + geom_line(aes(x=Size,y=values_test2), colour="black") +scale_x_log10()+scale_y_log10()
+#+end_src
+
+#+RESULTS:
+[[file:/tmp/babel-uOPXLB/figureTNbLGl.png]]
+
+** XML first part
+#+begin_src R :results output :session *R* :exports both
+
+# Check that values are in (0, 1]
+test_unit_interval <- function(value) {
+    return(value)
+    ifelse(value > 1, 1, value)
+}
+
+# Check that values are in [1, inf)
+test_lat_interval <- function(value) {
+    return(value)
+    ifelse(value < 1, 1, value)
+}
+
+desc=data.frame()
+desc=rbind(desc, ddply(bp,c("Name"), summarize, Name="smpi/os",Limit=Limit, desc=paste0(LimitInf,":",OsIntercept,":",OsSize)))
+desc=rbind(desc, ddply(bp,c("Name"), summarize, Name="smpi/or",Limit=Limit, desc=paste0(LimitInf,":",OrIntercept,":",OrSize)))
+desc=rbind(desc, ddply(bp,c("Name"), summarize, Name="smpi/ois",Limit=Limit, desc=paste0(LimitInf,":",OisIntercept,":",OisSize)))
+desc=rbind(desc, ddply(bp,c("Name"), summarize, Name="smpi/bw-factor",Limit=Limit, desc=paste0(LimitInf,":",test_unit_interval(1/(DelaySize*expected_bandwidth)))))
+desc=rbind(desc, ddply(bp,c("Name"), summarize, Name="smpi/lat-factor",Limit=Limit, desc=paste0(LimitInf,":",test_lat_interval(DelayIntercept/expected_latency))))
+
+desc <- desc[with(desc, order(Name,Limit)),]
+desc <- ddply(desc,c("Name"),summarize,label=paste(desc,collapse = ';'))
+
+as <- xmlNode("prop", attrs = c(id="smpi/async-small-thres", value=eager_threshold))
+de <- xmlNode("prop", attrs = c(id="smpi/send-is-detached-thres", value= detached_threshold))
+bw <- xmlNode("prop", attrs = c(id="smpi/bw-factor", value=desc[desc$Name=="smpi/bw-factor",]$label))
+lat <- xmlNode("prop", attrs = c(id="smpi/lat-factor", value=desc[desc$Name=="smpi/lat-factor",]$label))
+os <- xmlNode("prop", attrs = c(id="smpi/os", value=desc[desc$Name=="smpi/os",]$label))
+or <- xmlNode("prop", attrs = c(id="smpi/or", value=desc[desc$Name=="smpi/or",]$label))
+ois <- xmlNode("prop", attrs = c(id="smpi/ois", value=desc[desc$Name=="smpi/ois",]$label))
+
+
+a <- xmlNode("config", attrs = c(id="General"), os, ois, or, bw, lat, as, de)
+a
+#+end_src
+
+#+RESULTS:
+: <config id="General">
+:  <prop id="smpi/os" value="0:2.96602673049177e-07:9.63067377498995e-11;8133:3.3904768800679e-06:1.56022437190859e-10;15831:3.90962926379471e-06:1.09741422030978e-10;33956:7.66112215552645e-06:1.42601538829396e-10;64000:0:0"/>
+:  <prop id="smpi/ois" value="0:6.93128403082854e-07:7.0506417762198e-11;8133:3.5554129530609e-07:1.24551374926997e-10;15831:2.81448335656697e-06:4.70047993856276e-11;33956:3.17557673822261e-06:3.21707608036689e-11;64000:6.93999366360407e-07:-8.50681458452172e-14"/>
+:  <prop id="smpi/or" value="0:1.37554715330064e-06:8.44392452332948e-11;8133:1.09233545888931e-06:1.01719890574201e-10;15831:1.13143757941009e-06:1.01845568949196e-10;33956:1.15693452880123e-06:1.10069885685226e-10;64000:0:0"/>
+:  <prop id="smpi/bw-factor" value="0:0.494611255676032;8133:3.41910003651534;15831:7.67997840879173;33956:5.56919339228616;64000:0.986795108273028"/>
+:  <prop id="smpi/lat-factor" value="0:0.121330482467787;8133:1.80146524823607;15831:1.90937074497089;33956:4.71749849477199;64000:12.9249048646151"/>
+:  <prop id="smpi/async-small-thres" value="64000"/>
+:  <prop id="smpi/send-is-detached-thres" value="64000"/>
+: </config>
+** Pingpong without substraction
+#+begin_src R :results output :session *R* :exports both
+bp$DelayIntercept <- bp$PingPongIntercept/2
+bp$DelaySize <- bp$PingPongSize/2
+
+df_pingpong$values_test2 <- sapply(df_pingpong$Size,
+    function(x) {comm_function(x,"Delay")})
+
+df_pingpong$Duration2 = df_pingpong$Duration/2
+#+end_src
+
+#+RESULTS:
+
+#+begin_src R :results output graphics :file (org-babel-temp-file "figure" ".png") :exports both :width 600 :height 400 :session *R* 
+pl <- ggplot(data=df_pingpong, aes(x=Size,y=Duration2,color=group))+geom_point(alpha=.2)
+pl + geom_line(aes(x=Size,y=values_test2), colour="black") +scale_x_log10()+scale_y_log10()
+#+end_src
+
+#+RESULTS:
+[[file:/tmp/babel-uOPXLB/figureFpxLFo.png]]
+
+** XML first part without substraction
+#+begin_src R :results output :session *R* :exports both
+
+# Check that values are in (0, 1]
+test_unit_interval <- function(value) {
+    return(value)
+    ifelse(value > 1, 1, value)
+}
+
+# Check that values are in [1, inf)
+test_lat_interval <- function(value) {
+    return(value)
+    ifelse(value < 1, 1, value)
+}
+
+desc=data.frame()
+desc=rbind(desc, ddply(bp,c("Name"), summarize, Name="smpi/os",Limit=Limit, desc=paste0(LimitInf,":",OsIntercept,":",OsSize)))
+desc=rbind(desc, ddply(bp,c("Name"), summarize, Name="smpi/or",Limit=Limit, desc=paste0(LimitInf,":",OrIntercept,":",OrSize)))
+desc=rbind(desc, ddply(bp,c("Name"), summarize, Name="smpi/ois",Limit=Limit, desc=paste0(LimitInf,":",OisIntercept,":",OisSize)))
+desc=rbind(desc, ddply(bp,c("Name"), summarize, Name="smpi/bw-factor",Limit=Limit, desc=paste0(LimitInf,":",test_unit_interval(1/(DelaySize*expected_bandwidth)))))
+desc=rbind(desc, ddply(bp,c("Name"), summarize, Name="smpi/lat-factor",Limit=Limit, desc=paste0(LimitInf,":",test_lat_interval(DelayIntercept/expected_latency))))
+
+desc <- desc[with(desc, order(Name,Limit)),]
+desc <- ddply(desc,c("Name"),summarize,label=paste(desc,collapse = ';'))
+
+as <- xmlNode("prop", attrs = c(id="smpi/async-small-thres", value=eager_threshold))
+de <- xmlNode("prop", attrs = c(id="smpi/send-is-detached-thres", value= detached_threshold))
+bw <- xmlNode("prop", attrs = c(id="smpi/bw-factor", value=desc[desc$Name=="smpi/bw-factor",]$label))
+lat <- xmlNode("prop", attrs = c(id="smpi/lat-factor", value=desc[desc$Name=="smpi/lat-factor",]$label))
+os <- xmlNode("prop", attrs = c(id="smpi/os", value=desc[desc$Name=="smpi/os",]$label))
+or <- xmlNode("prop", attrs = c(id="smpi/or", value=desc[desc$Name=="smpi/or",]$label))
+ois <- xmlNode("prop", attrs = c(id="smpi/ois", value=desc[desc$Name=="smpi/ois",]$label))
+
+
+a <- xmlNode("config", attrs = c(id="General"), os, ois, or, bw, lat, as, de)
+a
+#+end_src
+
+#+RESULTS:
+: <config id="General">
+:  <prop id="smpi/os" value="0:2.96602673049177e-07:9.63067377498995e-11;8133:3.3904768800679e-06:1.56022437190859e-10;15831:3.90962926379471e-06:1.09741422030978e-10;33956:7.66112215552645e-06:1.42601538829396e-10;64000:0:0"/>
+:  <prop id="smpi/ois" value="0:6.93128403082854e-07:7.0506417762198e-11;8133:3.5554129530609e-07:1.24551374926997e-10;15831:2.81448335656697e-06:4.70047993856276e-11;33956:3.17557673822261e-06:3.21707608036689e-11;64000:6.93999366360407e-07:-8.50681458452172e-14"/>
+:  <prop id="smpi/or" value="0:1.37554715330064e-06:8.44392452332948e-11;8133:1.09233545888931e-06:1.01719890574201e-10;15831:1.13143757941009e-06:1.01845568949196e-10;33956:1.15693452880123e-06:1.10069885685226e-10;64000:0:0"/>
+:  <prop id="smpi/bw-factor" value="0:0.324962264010576;8133:0.639397122425822;15831:0.71261701401289;33956:0.642907882765286;64000:0.986795108273028"/>
+:  <prop id="smpi/lat-factor" value="0:1.49687763576843;8133:2.89380070712538;15831:3.04080832438098;33956:5.87443302357321;64000:12.9249048646151"/>
+:  <prop id="smpi/async-small-thres" value="64000"/>
+:  <prop id="smpi/send-is-detached-thres" value="64000"/>
+: </config>

@@ -1,0 +1,30 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+fabric = "*"
+colorlog = "*"
+pyyaml = "*"
+lxml = "*"
+
+[dev-packages]
+ipython = "*"
+jupyterlab = "*"
+graphviz = "*"
+matplotlib = "*"
+altair = "*"
+pandas = "*"
+vega-datasets = "*"
+scipy = "*"
+palettable = "*"
+plotnine = "*"
+"rpy2" = "*"
+tzlocal = "*"
+"pymc3" = "*"
+sampled = "*"
+pystan = "*"
+
+[requires]
+python_version = "3.6"
