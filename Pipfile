@@ -8,6 +8,7 @@ fabric = "*"
 colorlog = "*"
 pyyaml = "*"
 lxml = "*"
+statsmodels = "*"
 
 [dev-packages]
 ipython = "*"
