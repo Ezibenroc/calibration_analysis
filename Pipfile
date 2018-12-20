@@ -9,6 +9,7 @@ colorlog = "*"
 pyyaml = "*"
 lxml = "*"
 statsmodels = "*"
+peanut = {path = "/tmp/peanut-0.0.0-py3-none-any.whl"}
 
 [dev-packages]
 ipython = "*"
