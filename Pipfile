@@ -13,6 +13,7 @@ statsmodels = "*"
 papermill = "*"
 jsonschema = "*"
 scipy = "< 1.3.0"
+tables = "*"
 
 [dev-packages]
 ipython = "*"
