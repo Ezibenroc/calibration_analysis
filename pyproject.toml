@@ -20,8 +20,7 @@ ipython = "^7.7"
 jupyterlab = "^1.0"
 plotnine = "^0.5.1"
 seaborn = "^0.9.0"
-peanut = { git = "https://github.com/Ezibenroc/peanut.git", rev="e8450dc6c561b97b433c3da9aa2cad001e03fb9b" }
-cashew = { git = "https://github.com/Ezibenroc/cashew.git", rev="914230ba92388decf817f2c9606f3021d5d159be" }
+cashew = { git = "https://github.com/Ezibenroc/cashew.git", rev="ca8a64e6735b60bc60c49342320befcdeaf55f90" }
 
 [tool.poetry.dev-dependencies]
 
