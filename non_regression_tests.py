@@ -84,3 +84,50 @@ def plot_latest_distribution(df):
             xlab('Average performance (Gflop/s)') +\
             ylab('Number of CPU') +\
             ggtitle(title)
+
+
+def select_last_n(df, n=10):
+    selection = df.tail(n=n)
+    if len(df) < n:
+        selection = pandas.DataFrame(columns=df.columns)
+    return selection
+
+
+def mark_weird(df, select_func=select_last_n, nb_sigma=2, col='avg_gflops'):
+    df = df.copy()
+    NAN = float('NaN')
+    df['mu'] = NAN
+    df['sigma'] = NAN
+    for i in range(0, len(df)):
+        row = df.iloc[i]
+        candidates = df[(df['node'] == row['node']) & (df['cpu'] == row['cpu']) & (df['timestamp'] < row['timestamp'])]
+        selected = select_func(candidates)[col]
+        df.loc[df.index[i], ('mu', 'sigma')] = selected.mean(), selected.std()
+    df['low_bound']  = df['mu'] - df['sigma']*nb_sigma
+    df['high_bound'] = df['mu'] + df['sigma']*nb_sigma
+    df['weird'] = (df[col] - df['mu']).abs() > nb_sigma*df['sigma']
+    df.loc[df['mu'].isna(), 'weird'] = 'NA'
+    return df
+
+
+def plot_evolution_node(df, col):
+    return ggplot(df) +\
+            aes(x='timestamp', y=col, color='weird') +\
+            geom_point() +\
+            scale_color_manual({
+                'NA': '#AAAAAA',
+                True: '#FF0000',
+                False: '#00FF00'}) +\
+            theme_bw() +\
+            geom_ribbon(aes(ymin='low_bound', ymax='high_bound'), color='grey', alpha=0.2) +\
+            facet_wrap('cpu', labeller='label_both')
+
+
+def plot_evolution_cluster(df, col):
+    cluster = df['cluster'].unique()
+    assert len(cluster) == 1
+    cluster = cluster[0]
+    for node in sorted(df['node'].unique()):
+        plot = plot_evolution_node(df[df['node'] == node], col) +\
+                ggtitle(f'Evolution of the node {cluster}-{node}')
+        print(plot)
