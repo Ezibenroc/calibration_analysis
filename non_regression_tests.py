@@ -5,6 +5,8 @@ import logging
 import plotnine
 plotnine.options.figure_size = (12, 8)
 from plotnine import *
+from mizani.breaks import date_breaks
+from mizani.formatters import date_format
 
 # Setting up a logger
 logger = logging.getLogger('non_regression_tests')
@@ -36,6 +38,19 @@ def format(df):
     return df
 
 
+def format_changelog(df):
+    df['date'] = pandas.to_datetime(df['date'])
+    return df
+
+
+def filter_changelog(df, cluster, node):
+    result_rows = []
+    for _, row in df.iterrows():
+        if row['cluster'] == 'all' or cluster in row['cluster'].split('/'):
+            if row['node'] == 'all' or str(node) in row['node'].split('/'):
+                result_rows.append(row)
+    return pandas.DataFrame(result_rows)
+
 def filter(df, **kwargs):
     '''
     Filter the dataframe according to the given named parameters.
@@ -65,13 +80,17 @@ def filter_latest(df):
     return df
 
 
+def select_unique(df, col):
+    res = df[col].unique()
+    assert len(res) == 1
+    return res[0]
+
+
 def plot_latest_distribution(df):
     col = 'avg_gflops'
     min_f = df[col].min()
     max_f = df[col].max()
-    cluster = df['cluster'].unique()
-    assert len(cluster) == 1
-    cluster = cluster[0]
+    cluster = select_unique(df, 'cluster')
     df = filter_latest(df)
     median = df[col].median()
     title = f'Distribution of the latest runs made on the cluster {cluster}\nMedian performance of {median:.2f} Gflop/s'
@@ -93,6 +112,30 @@ def select_last_n(df, n=10):
     return selection
 
 
+def select_first_n_changelog(df, changelog, nmin=8, nmax=20):
+    empty = pandas.DataFrame(columns=df.columns)
+    if len(df) == 0:
+        return empty
+    cluster = select_unique(df, 'cluster')
+    node = select_unique(df, 'node')
+    changelog = filter_changelog(changelog, cluster, node)
+    # We remove all the changes that will happen after the most recent event
+    changelog = changelog[changelog['date'] <= df['timestamp'].max()]
+    # We also remove the most recent event
+    df = df[df['timestamp'] < df['timestamp'].max()]
+    # Then, we remove all the events that have happened before the most recent change
+    max_change = changelog['date'].max()
+    if max_change != max_change:  # max_change is NaT (there was no change yet)
+        max_change = pandas.to_datetime(0, unit='s')
+    df = df[df['timestamp'] >= max_change]
+    # Finally, we take the first N
+    result = df.sort_values(by='timestamp').head(n=nmax)
+    if len(result) < nmin:
+        return empty
+    else:
+        return result
+
+
 def mark_weird(df, select_func=select_last_n, nb_sigma=2, col='avg_gflops'):
     df = df.copy()
     NAN = float('NaN')
@@ -100,8 +143,9 @@ def mark_weird(df, select_func=select_last_n, nb_sigma=2, col='avg_gflops'):
     df['sigma'] = NAN
     for i in range(0, len(df)):
         row = df.iloc[i]
-        candidates = df[(df['node'] == row['node']) & (df['cpu'] == row['cpu']) & (df['timestamp'] < row['timestamp'])]
-        selected = select_func(candidates)[col]
+        candidates = df[(df['node'] == row['node']) & (df['cpu'] == row['cpu']) & (df['timestamp'] <= row['timestamp'])]
+        selected = select_func(candidates)#[col]
+        selected = selected[col]
         df.loc[df.index[i], ('mu', 'sigma')] = selected.mean(), selected.std()
     df['low_bound']  = df['mu'] - df['sigma']*nb_sigma
     df['high_bound'] = df['mu'] + df['sigma']*nb_sigma
@@ -120,14 +164,18 @@ def plot_evolution_node(df, col):
                 False: '#00FF00'}) +\
             theme_bw() +\
             geom_ribbon(aes(ymin='low_bound', ymax='high_bound'), color='grey', alpha=0.2) +\
-            facet_wrap('cpu', labeller='label_both')
+            facet_wrap('cpu', labeller='label_both') +\
+            scale_x_datetime(breaks=date_breaks('3 months'))
 
 
-def plot_evolution_cluster(df, col):
-    cluster = df['cluster'].unique()
-    assert len(cluster) == 1
-    cluster = cluster[0]
+def plot_evolution_cluster(df, col, changelog=None):
+    cluster = select_unique(df, 'cluster')
     for node in sorted(df['node'].unique()):
         plot = plot_evolution_node(df[df['node'] == node], col) +\
                 ggtitle(f'Evolution of the node {cluster}-{node}')
+        if changelog is not None:
+            log = filter_changelog(changelog[changelog['date'] >= df['timestamp'].min()], cluster, node)
+            dates = [] if len(log) == 0 else list(log['date'])
+            for date in dates:
+                plot += geom_vline(xintercept=date, linetype='dashed')
         print(plot)
