@@ -86,21 +86,19 @@ def select_unique(df, col):
     return res[0]
 
 
-def plot_latest_distribution(df):
-    col = 'avg_gflops'
+def plot_latest_distribution(df, col='avg_gflops'):
     min_f = df[col].min()
     max_f = df[col].max()
     cluster = select_unique(df, 'cluster')
     df = filter_latest(df)
     median = df[col].median()
-    title = f'Distribution of the latest runs made on the cluster {cluster}\nMedian performance of {median:.2f} Gflop/s'
+    title = f'Distribution of the latest runs made on the cluster {cluster}\nMedian of {median:.2f}'
     return ggplot(df) +\
             aes(x=col) +\
-            geom_histogram(binwidth=0.5, alpha=0.5) +\
+            geom_histogram(binwidth=(max_f-min_f)/10, alpha=0.5) +\
             theme_bw() +\
             geom_vline(xintercept=median) +\
             expand_limits(x=(min_f, max_f)) +\
-            xlab('Average performance (Gflop/s)') +\
             ylab('Number of CPU') +\
             ggtitle(title)
 
@@ -169,10 +167,13 @@ def plot_evolution_node(df, col):
 
 
 def plot_evolution_cluster(df, col, changelog=None):
+    min_f = df[col].min()
+    max_f = df[col].max()
     cluster = select_unique(df, 'cluster')
     for node in sorted(df['node'].unique()):
         plot = plot_evolution_node(df[df['node'] == node], col) +\
-                ggtitle(f'Evolution of the node {cluster}-{node}')
+                ggtitle(f'Evolution of the node {cluster}-{node}') +\
+                expand_limits(y=(min_f, max_f))
         if changelog is not None:
             log = filter_changelog(changelog[changelog['date'] >= df['timestamp'].min()], cluster, node)
             dates = [] if len(log) == 0 else list(log['date'])
