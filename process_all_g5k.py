@@ -1,4 +1,5 @@
 import time
+import sys
 import asyncio
 
 
@@ -41,7 +42,7 @@ async def process_all(clusters, parameters):
     ])
 
 
-def main():
+def main(cluster_list=None):
     clusters = [
         'dahu',
         'yeti',
@@ -54,6 +55,11 @@ def main():
         'chiclet',
         'chetemi',
     ]
+    if cluster_list is not None:
+        diff = set(cluster_list) - set(clusters)
+        if len(diff) > 0:
+            sys.exit(f'Unknown clusters: {", ".join(diff)}')
+        clusters = list(cluster_list)
     parameters = [
         'avg_gflops',
         'mean_frequency',
@@ -66,4 +72,8 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    if len(sys.argv) > 1:
+        cluster_list = sys.argv[1:]
+    else:
+        cluster_list = None
+    main(cluster_list)
