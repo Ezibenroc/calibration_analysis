@@ -78,27 +78,6 @@ webencodings = "*"
 
 [[package]]
 category = "main"
-description = ""
-name = "cashew"
-optional = false
-python-versions = ">= 3.5.3"
-version = "0.0.0"
-
-[package.dependencies]
-numpy = "^1.17"
-pandas = "^0.25.0"
-peanut = "rev 45eae5c006cc6f07632903f1ea40385739a69c63"
-pyyaml = "^5.1"
-statsmodels = "^0.10.1"
-tables = "^3.5"
-
-[package.source]
-reference = "ca8a64e6735b60bc60c49342320befcdeaf55f90"
-type = "git"
-url = "https://github.com/Ezibenroc/cashew.git"
-
-[[package]]
-category = "main"
 description = "Python package for providing Mozilla's CA Bundle."
 name = "certifi"
 optional = false
@@ -749,25 +728,6 @@ six = "*"
 
 [[package]]
 category = "main"
-description = ""
-name = "peanut"
-optional = false
-python-versions = ">= 3.4"
-version = "0.0.0"
-
-[package.dependencies]
-Fabric = "^2.4"
-PyYAML = "^5.1"
-colorlog = "^4.0"
-lxml = "^4.4"
-
-[package.source]
-reference = "45eae5c006cc6f07632903f1ea40385739a69c63"
-type = "git"
-url = "https://github.com/Ezibenroc/peanut.git"
-
-[[package]]
-category = "main"
 description = "Pexpect allows easy control of interactive console applications."
 marker = "sys_platform != \"win32\""
 name = "pexpect"
@@ -1253,6 +1213,17 @@ version = "0.5.1"
 
 [[package]]
 category = "main"
+description = "A built-package format for Python"
+name = "wheel"
+optional = false
+python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
+version = "0.34.2"
+
+[package.extras]
+test = ["pytest (>=3.0.0)", "pytest-cov"]
+
+[[package]]
+category = "main"
 description = "Backport of pathlib-compatible object wrapper for zip files"
 marker = "python_version < \"3.8\""
 name = "zipp"
@@ -1268,7 +1239,7 @@ docs = ["sphinx", "jaraco.packaging (>=3.2)", "rst.linker (>=1.9)"]
 testing = ["pathlib2", "contextlib2", "unittest2"]
 
 [metadata]
-content-hash = "4e5ea175a1d3e0b2be905ff36613f872b488d7b95a889902b680dadf77e4fdea"
+content-hash = "2e191c063727c7e2a3f3228ec2a445be62e5229daa7e9f456557d2e426c80e58"
 python-versions = "^3.7"
 
 [metadata.files]
@@ -1316,7 +1287,6 @@ bleach = [
     {file = "bleach-3.1.0-py2.py3-none-any.whl", hash = "sha256:213336e49e102af26d9cde77dd2d0397afabc5a6bf2fed985dc35b5d1e285a16"},
     {file = "bleach-3.1.0.tar.gz", hash = "sha256:3fdf7f77adcf649c9911387df51254b813185e32b2c6619f690b593a617e19fa"},
 ]
-cashew = []
 certifi = [
     {file = "certifi-2019.11.28-py2.py3-none-any.whl", hash = "sha256:017c25db2a153ce562900032d5bc68e9f191e44e9a0f762f373977de9df1fbb3"},
     {file = "certifi-2019.11.28.tar.gz", hash = "sha256:25b64c7da4cd7479594d035c08c2d809eb4aab3a26e5a990ea98cc450c320f1f"},
@@ -1750,7 +1720,6 @@ patsy = [
     {file = "patsy-0.5.1-py2.py3-none-any.whl", hash = "sha256:5465be1c0e670c3a965355ec09e9a502bf2c4cbe4875e8528b0221190a8a5d40"},
     {file = "patsy-0.5.1.tar.gz", hash = "sha256:f115cec4201e1465cd58b9866b0b0e7b941caafec129869057405bfe5b5e3991"},
 ]
-peanut = []
 pexpect = [
     {file = "pexpect-4.7.0-py2.py3-none-any.whl", hash = "sha256:2094eefdfcf37a1fdbfb9aa090862c1a4878e5c7e0e7e7088bdb511c558e5cd1"},
     {file = "pexpect-4.7.0.tar.gz", hash = "sha256:9e2c1fd0e6ee3a49b28f95d4b33bc389c89b20af6a1255906e90ff1262ce62eb"},
@@ -2069,6 +2038,10 @@ wcwidth = [
 webencodings = [
     {file = "webencodings-0.5.1-py2.py3-none-any.whl", hash = "sha256:a0af1213f3c2226497a97e2b3aa01a7e4bee4f403f95be16fc9acd2947514a78"},
     {file = "webencodings-0.5.1.tar.gz", hash = "sha256:b36a1c245f2d304965eb4e0a82848379241dc04b865afcc4aab16748587e1923"},
+]
+wheel = [
+    {file = "wheel-0.34.2-py2.py3-none-any.whl", hash = "sha256:df277cb51e61359aba502208d680f90c0493adec6f0e848af94948778aed386e"},
+    {file = "wheel-0.34.2.tar.gz", hash = "sha256:8788e9155fe14f54164c1b9eb0a319d98ef02c160725587ad60f14ddc57b6f96"},
 ]
 zipp = [
     {file = "zipp-1.0.0-py2.py3-none-any.whl", hash = "sha256:8dda78f06bd1674bd8720df8a50bb47b6e1233c503a4eed8e7810686bde37656"},
