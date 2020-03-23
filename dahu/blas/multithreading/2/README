@@ -1,0 +1,3 @@
+The file stats.csv has been computed with the following command:
+
+python compute_regressions.py multithreading/2/{stats.csv,*.zip}
