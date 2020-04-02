@@ -1,0 +1,1323 @@
+model:
+    info:
+        nb_nodes: 256
+        avg_mnk: 2.3984079e-12
+        avg_intercept: 3.7939803e-06
+        avg_mnk_residual: 8.2414172e-14
+        avg_gflops: 833.8865265
+        generation:
+            names:
+            - mnk
+            - intercept
+            - mnk_residual
+            hyper_average:
+            - 2.3984079e-12
+            - 3.7939803e-06
+            - 8.2414172e-14
+            spatial:
+            - 4.1552077e-27
+            - -1.6136843e-21
+            - 4.9569135e-30
+            - -1.6136843e-21
+            - 3.1212781e-15
+            - -1.3256363e-23
+            - 4.9569135e-30
+            - -1.3256363e-23
+            - 6.9452426e-31
+            temporal:
+            - 5.1834548e-28
+            - 1.2981547e-21
+            - 2.7973199e-29
+            - 1.2981547e-21
+            - 3.8856412e-13
+            - 1.529997e-22
+            - 2.7973199e-29
+            - 1.529997e-22
+            - 6.6588899e-29
+    model:
+    -   node: 0
+        mnk: 2.4085442e-12
+        intercept: 4.0576613e-06
+        mnk_residual: 8.6113123e-14
+        avg_gflops: 830.3771379
+    -   node: 1
+        mnk: 2.4050742e-12
+        intercept: 4.1893326e-06
+        mnk_residual: 8.5664424e-14
+        avg_gflops: 831.575168
+    -   node: 2
+        mnk: 2.339173e-12
+        intercept: 3.4965611e-06
+        mnk_residual: 7.67486e-14
+        avg_gflops: 855.0030246
+    -   node: 3
+        mnk: 2.364452e-12
+        intercept: 3.7571821e-06
+        mnk_residual: 8.7189583e-14
+        avg_gflops: 845.8619545
+    -   node: 4
+        mnk: 2.4294103e-12
+        intercept: 4.2465201e-06
+        mnk_residual: 8.1985738e-14
+        avg_gflops: 823.2450372
+    -   node: 5
+        mnk: 2.4438439e-12
+        intercept: 4.0922979e-06
+        mnk_residual: 9.4071342e-14
+        avg_gflops: 818.3828775
+    -   node: 6
+        mnk: 2.4746567e-12
+        intercept: 3.3292944e-06
+        mnk_residual: 8.3952624e-14
+        avg_gflops: 808.1929141
+    -   node: 7
+        mnk: 2.2516138e-12
+        intercept: 4.1764928e-06
+        mnk_residual: 7.8041624e-14
+        avg_gflops: 888.2518019
+    -   node: 8
+        mnk: 2.452856e-12
+        intercept: 4.0855131e-06
+        mnk_residual: 8.3511151e-14
+        avg_gflops: 815.3760385
+    -   node: 9
+        mnk: 2.4555355e-12
+        intercept: 3.7229745e-06
+        mnk_residual: 7.432106e-14
+        avg_gflops: 814.4862842
+    -   node: 10
+        mnk: 2.4694596e-12
+        intercept: 3.7421098e-06
+        mnk_residual: 8.7302941e-14
+        avg_gflops: 809.8938015
+    -   node: 11
+        mnk: 2.4657273e-12
+        intercept: 2.7205321e-06
+        mnk_residual: 7.5046493e-14
+        avg_gflops: 811.1197175
+    -   node: 12
+        mnk: 2.2202933e-12
+        intercept: 6.6576727e-06
+        mnk_residual: 8.771969e-14
+        avg_gflops: 900.7818966
+    -   node: 13
+        mnk: 2.3991824e-12
+        intercept: 4.9454165e-06
+        mnk_residual: 8.3758825e-14
+        avg_gflops: 833.617336
+    -   node: 14
+        mnk: 2.4133231e-12
+        intercept: 4.0156485e-06
+        mnk_residual: 7.8503679e-14
+        avg_gflops: 828.732802
+    -   node: 15
+        mnk: 2.4537783e-12
+        intercept: 4.0459443e-06
+        mnk_residual: 8.3495043e-14
+        avg_gflops: 815.0695749
+    -   node: 16
+        mnk: 2.3930566e-12
+        intercept: 3.600918e-06
+        mnk_residual: 8.6466655e-14
+        avg_gflops: 835.7512142
+    -   node: 17
+        mnk: 2.3653604e-12
+        intercept: 4.6116361e-06
+        mnk_residual: 9.5816817e-14
+        avg_gflops: 845.5371085
+    -   node: 18
+        mnk: 2.3104079e-12
+        intercept: 4.0526153e-06
+        mnk_residual: 7.5944356e-14
+        avg_gflops: 865.6480148
+    -   node: 19
+        mnk: 2.5330852e-12
+        intercept: 2.985768e-06
+        mnk_residual: 8.7463095e-14
+        avg_gflops: 789.551031
+    -   node: 20
+        mnk: 2.4231034e-12
+        intercept: 2.9059619e-06
+        mnk_residual: 7.8718137e-14
+        avg_gflops: 825.3878213
+    -   node: 21
+        mnk: 2.2861799e-12
+        intercept: 3.0715721e-06
+        mnk_residual: 7.3201103e-14
+        avg_gflops: 874.8217758
+    -   node: 22
+        mnk: 2.4540639e-12
+        intercept: 4.5758395e-06
+        mnk_residual: 9.198261e-14
+        avg_gflops: 814.9746896
+    -   node: 23
+        mnk: 2.5098618e-12
+        intercept: 4.7032908e-06
+        mnk_residual: 7.6253931e-14
+        avg_gflops: 796.8566143
+    -   node: 24
+        mnk: 2.4932994e-12
+        intercept: 3.7040405e-06
+        mnk_residual: 8.1726681e-14
+        avg_gflops: 802.1499595
+    -   node: 25
+        mnk: 2.2710931e-12
+        intercept: 4.6624583e-06
+        mnk_residual: 8.2612959e-14
+        avg_gflops: 880.6331882
+    -   node: 26
+        mnk: 2.3587307e-12
+        intercept: 3.8851255e-06
+        mnk_residual: 7.8899254e-14
+        avg_gflops: 847.9136848
+    -   node: 27
+        mnk: 2.3458524e-12
+        intercept: 3.6290445e-06
+        mnk_residual: 6.9545572e-14
+        avg_gflops: 852.5685692
+    -   node: 28
+        mnk: 2.4383992e-12
+        intercept: 3.5431139e-06
+        mnk_residual: 6.7696636e-14
+        avg_gflops: 820.2102567
+    -   node: 29
+        mnk: 2.3984978e-12
+        intercept: 3.353257e-06
+        mnk_residual: 8.2615194e-14
+        avg_gflops: 833.8552404
+    -   node: 30
+        mnk: 2.5219936e-12
+        intercept: 3.9136302e-06
+        mnk_residual: 7.4417333e-14
+        avg_gflops: 793.0234345
+    -   node: 31
+        mnk: 2.3657062e-12
+        intercept: 3.467195e-06
+        mnk_residual: 8.4597115e-14
+        avg_gflops: 845.4135083
+    -   node: 32
+        mnk: 2.2745973e-12
+        intercept: 3.2099005e-06
+        mnk_residual: 8.9519919e-14
+        avg_gflops: 879.2765129
+    -   node: 33
+        mnk: 2.3945885e-12
+        intercept: 3.0736392e-06
+        mnk_residual: 1.0556746e-13
+        avg_gflops: 835.2165589
+    -   node: 34
+        mnk: 2.3741639e-12
+        intercept: 3.3947006e-06
+        mnk_residual: 7.8636499e-14
+        avg_gflops: 842.4018288
+    -   node: 35
+        mnk: 2.364896e-12
+        intercept: 4.3928047e-06
+        mnk_residual: 7.6510788e-14
+        avg_gflops: 845.7031471
+    -   node: 36
+        mnk: 2.3144153e-12
+        intercept: 3.6875016e-06
+        mnk_residual: 9.7423193e-14
+        avg_gflops: 864.1491578
+    -   node: 37
+        mnk: 2.507223e-12
+        intercept: 3.5527821e-06
+        mnk_residual: 7.9398085e-14
+        avg_gflops: 797.6952918
+    -   node: 38
+        mnk: 2.268113e-12
+        intercept: 4.6991549e-06
+        mnk_residual: 6.6210187e-14
+        avg_gflops: 881.7902923
+    -   node: 39
+        mnk: 2.3436314e-12
+        intercept: 4.3524373e-06
+        mnk_residual: 8.2709572e-14
+        avg_gflops: 853.3765218
+    -   node: 40
+        mnk: 2.3934909e-12
+        intercept: 3.1511209e-06
+        mnk_residual: 7.8053467e-14
+        avg_gflops: 835.599572
+    -   node: 41
+        mnk: 2.4444584e-12
+        intercept: 4.1301546e-06
+        mnk_residual: 8.8248314e-14
+        avg_gflops: 818.1771571
+    -   node: 42
+        mnk: 2.414613e-12
+        intercept: 3.9313599e-06
+        mnk_residual: 8.1081472e-14
+        avg_gflops: 828.2900889
+    -   node: 43
+        mnk: 2.2297717e-12
+        intercept: 4.4145677e-06
+        mnk_residual: 7.8939236e-14
+        avg_gflops: 896.952802
+    -   node: 44
+        mnk: 2.3925278e-12
+        intercept: 3.716807e-06
+        mnk_residual: 9.0098522e-14
+        avg_gflops: 835.93594
+    -   node: 45
+        mnk: 2.4430318e-12
+        intercept: 4.7787161e-06
+        mnk_residual: 9.1697005e-14
+        avg_gflops: 818.6549349
+    -   node: 46
+        mnk: 2.3869781e-12
+        intercept: 4.3118271e-06
+        mnk_residual: 8.9016167e-14
+        avg_gflops: 837.8794817
+    -   node: 47
+        mnk: 2.4844343e-12
+        intercept: 3.7186467e-06
+        mnk_residual: 8.4176449e-14
+        avg_gflops: 805.0122357
+    -   node: 48
+        mnk: 2.3530694e-12
+        intercept: 3.715175e-06
+        mnk_residual: 8.4881755e-14
+        avg_gflops: 849.953683
+    -   node: 49
+        mnk: 2.3782728e-12
+        intercept: 3.098385e-06
+        mnk_residual: 8.1952858e-14
+        avg_gflops: 840.9464305
+    -   node: 50
+        mnk: 2.4186904e-12
+        intercept: 3.8199115e-06
+        mnk_residual: 8.1468546e-14
+        avg_gflops: 826.8937765
+    -   node: 51
+        mnk: 2.4035297e-12
+        intercept: 3.5804851e-06
+        mnk_residual: 8.1998403e-14
+        avg_gflops: 832.1095263
+    -   node: 52
+        mnk: 2.3820683e-12
+        intercept: 4.8855198e-06
+        mnk_residual: 7.7183505e-14
+        avg_gflops: 839.6064889
+    -   node: 53
+        mnk: 2.4093606e-12
+        intercept: 3.9239094e-06
+        mnk_residual: 7.6378674e-14
+        avg_gflops: 830.0957447
+    -   node: 54
+        mnk: 2.3856089e-12
+        intercept: 4.136199e-06
+        mnk_residual: 8.2758652e-14
+        avg_gflops: 838.360373
+    -   node: 55
+        mnk: 2.3337863e-12
+        intercept: 4.5128725e-06
+        mnk_residual: 8.3509385e-14
+        avg_gflops: 856.9765032
+    -   node: 56
+        mnk: 2.3303442e-12
+        intercept: 3.4071132e-06
+        mnk_residual: 9.1339792e-14
+        avg_gflops: 858.2423002
+    -   node: 57
+        mnk: 2.3242758e-12
+        intercept: 2.921033e-06
+        mnk_residual: 8.7597719e-14
+        avg_gflops: 860.4830948
+    -   node: 58
+        mnk: 2.3268758e-12
+        intercept: 2.965346e-06
+        mnk_residual: 8.3884246e-14
+        avg_gflops: 859.5216012
+    -   node: 59
+        mnk: 2.3972837e-12
+        intercept: 3.2411646e-06
+        mnk_residual: 9.0814852e-14
+        avg_gflops: 834.2775528
+    -   node: 60
+        mnk: 2.3684388e-12
+        intercept: 3.9879386e-06
+        mnk_residual: 9.1118471e-14
+        avg_gflops: 844.4381252
+    -   node: 61
+        mnk: 2.376479e-12
+        intercept: 2.7567307e-06
+        mnk_residual: 6.3959136e-14
+        avg_gflops: 841.5811777
+    -   node: 62
+        mnk: 2.3569923e-12
+        intercept: 4.6297992e-06
+        mnk_residual: 8.9415865e-14
+        avg_gflops: 848.5390462
+    -   node: 63
+        mnk: 2.503421e-12
+        intercept: 2.9530697e-06
+        mnk_residual: 9.3370369e-14
+        avg_gflops: 798.9067824
+    -   node: 64
+        mnk: 2.3728869e-12
+        intercept: 4.5689405e-06
+        mnk_residual: 8.2174117e-14
+        avg_gflops: 842.855172
+    -   node: 65
+        mnk: 2.4292469e-12
+        intercept: 3.9277203e-06
+        mnk_residual: 8.2822252e-14
+        avg_gflops: 823.3004396
+    -   node: 66
+        mnk: 2.3628731e-12
+        intercept: 3.5469044e-06
+        mnk_residual: 7.9272623e-14
+        avg_gflops: 846.4271816
+    -   node: 67
+        mnk: 2.478672e-12
+        intercept: 4.299261e-06
+        mnk_residual: 9.0868882e-14
+        avg_gflops: 806.8836932
+    -   node: 68
+        mnk: 2.5388837e-12
+        intercept: 4.4665831e-06
+        mnk_residual: 8.6822882e-14
+        avg_gflops: 787.7477833
+    -   node: 69
+        mnk: 2.3530689e-12
+        intercept: 2.9875756e-06
+        mnk_residual: 9.4020645e-14
+        avg_gflops: 849.9538598
+    -   node: 70
+        mnk: 2.4276887e-12
+        intercept: 5.6325813e-06
+        mnk_residual: 7.4765571e-14
+        avg_gflops: 823.8288688
+    -   node: 71
+        mnk: 2.4031255e-12
+        intercept: 2.7526551e-06
+        mnk_residual: 7.8300649e-14
+        avg_gflops: 832.2494952
+    -   node: 72
+        mnk: 2.3855305e-12
+        intercept: 4.5223965e-06
+        mnk_residual: 9.1977243e-14
+        avg_gflops: 838.3879504
+    -   node: 73
+        mnk: 2.3703285e-12
+        intercept: 4.383114e-06
+        mnk_residual: 7.80557e-14
+        avg_gflops: 843.7648919
+    -   node: 74
+        mnk: 2.4200285e-12
+        intercept: 3.6695653e-06
+        mnk_residual: 7.4811092e-14
+        avg_gflops: 826.4365488
+    -   node: 75
+        mnk: 2.3583383e-12
+        intercept: 3.3943422e-06
+        mnk_residual: 6.7264195e-14
+        avg_gflops: 848.0547679
+    -   node: 76
+        mnk: 2.4061763e-12
+        intercept: 4.0138327e-06
+        mnk_residual: 8.1418673e-14
+        avg_gflops: 831.1942787
+    -   node: 77
+        mnk: 2.419329e-12
+        intercept: 4.2995016e-06
+        mnk_residual: 9.3263021e-14
+        avg_gflops: 826.6754823
+    -   node: 78
+        mnk: 2.4315656e-12
+        intercept: 4.0177819e-06
+        mnk_residual: 8.1662233e-14
+        avg_gflops: 822.5153228
+    -   node: 79
+        mnk: 2.3620417e-12
+        intercept: 3.7176115e-06
+        mnk_residual: 8.1037159e-14
+        avg_gflops: 846.7250985
+    -   node: 80
+        mnk: 2.3800756e-12
+        intercept: 3.8683513e-06
+        mnk_residual: 9.7150965e-14
+        avg_gflops: 840.3094541
+    -   node: 81
+        mnk: 2.343712e-12
+        intercept: 3.7498819e-06
+        mnk_residual: 7.1309757e-14
+        avg_gflops: 853.3471775
+    -   node: 82
+        mnk: 2.3252729e-12
+        intercept: 3.2709022e-06
+        mnk_residual: 7.936419e-14
+        avg_gflops: 860.1140994
+    -   node: 83
+        mnk: 2.3448939e-12
+        intercept: 3.4014327e-06
+        mnk_residual: 8.9416667e-14
+        avg_gflops: 852.9170463
+    -   node: 84
+        mnk: 2.4073148e-12
+        intercept: 5.2045238e-06
+        mnk_residual: 8.8151987e-14
+        avg_gflops: 830.8011835
+    -   node: 85
+        mnk: 2.4531693e-12
+        intercept: 4.3920216e-06
+        mnk_residual: 6.4885842e-14
+        avg_gflops: 815.2718957
+    -   node: 86
+        mnk: 2.391257e-12
+        intercept: 3.6982757e-06
+        mnk_residual: 7.780107e-14
+        avg_gflops: 836.380202
+    -   node: 87
+        mnk: 2.2792449e-12
+        intercept: 3.7749156e-06
+        mnk_residual: 8.664253e-14
+        avg_gflops: 877.4835814
+    -   node: 88
+        mnk: 2.4657647e-12
+        intercept: 3.5058664e-06
+        mnk_residual: 8.2021424e-14
+        avg_gflops: 811.1074118
+    -   node: 89
+        mnk: 2.4639114e-12
+        intercept: 4.6229022e-06
+        mnk_residual: 6.5291495e-14
+        avg_gflops: 811.7174994
+    -   node: 90
+        mnk: 2.5278956e-12
+        intercept: 2.75153e-06
+        mnk_residual: 9.1577731e-14
+        avg_gflops: 791.1719005
+    -   node: 91
+        mnk: 2.2797733e-12
+        intercept: 4.4716948e-06
+        mnk_residual: 7.3625574e-14
+        avg_gflops: 877.280203
+    -   node: 92
+        mnk: 2.4474858e-12
+        intercept: 3.9471347e-06
+        mnk_residual: 8.515233e-14
+        avg_gflops: 817.1651149
+    -   node: 93
+        mnk: 2.4621696e-12
+        intercept: 3.0940183e-06
+        mnk_residual: 7.2764487e-14
+        avg_gflops: 812.2917282
+    -   node: 94
+        mnk: 2.4364015e-12
+        intercept: 3.5107546e-06
+        mnk_residual: 7.8276049e-14
+        avg_gflops: 820.8827496
+    -   node: 95
+        mnk: 2.3568e-12
+        intercept: 4.7065923e-06
+        mnk_residual: 7.6322779e-14
+        avg_gflops: 848.6082831
+    -   node: 96
+        mnk: 2.4437653e-12
+        intercept: 4.3230451e-06
+        mnk_residual: 8.8370025e-14
+        avg_gflops: 818.4092031
+    -   node: 97
+        mnk: 2.3001204e-12
+        intercept: 4.1989833e-06
+        mnk_residual: 7.3931764e-14
+        avg_gflops: 869.5197182
+    -   node: 98
+        mnk: 2.3966749e-12
+        intercept: 4.5359856e-06
+        mnk_residual: 8.7744142e-14
+        avg_gflops: 834.4894854
+    -   node: 99
+        mnk: 2.5077625e-12
+        intercept: 3.7706804e-06
+        mnk_residual: 7.9899503e-14
+        avg_gflops: 797.5236839
+    -   node: 100
+        mnk: 2.4345713e-12
+        intercept: 3.060869e-06
+        mnk_residual: 9.122696e-14
+        avg_gflops: 821.4998562
+    -   node: 101
+        mnk: 2.4831983e-12
+        intercept: 2.9490672e-06
+        mnk_residual: 7.2274568e-14
+        avg_gflops: 805.4129238
+    -   node: 102
+        mnk: 2.3865368e-12
+        intercept: 5.0971492e-06
+        mnk_residual: 8.072771e-14
+        avg_gflops: 838.0344202
+    -   node: 103
+        mnk: 2.3440594e-12
+        intercept: 4.7494478e-06
+        mnk_residual: 8.2409395e-14
+        avg_gflops: 853.2207059
+    -   node: 104
+        mnk: 2.3063501e-12
+        intercept: 3.0796276e-06
+        mnk_residual: 8.6887976e-14
+        avg_gflops: 867.1710417
+    -   node: 105
+        mnk: 2.3714771e-12
+        intercept: 4.9920231e-06
+        mnk_residual: 9.0960462e-14
+        avg_gflops: 843.3562362
+    -   node: 106
+        mnk: 2.362915e-12
+        intercept: 3.7304814e-06
+        mnk_residual: 8.9075125e-14
+        avg_gflops: 846.4121589
+    -   node: 107
+        mnk: 2.3655559e-12
+        intercept: 4.5300542e-06
+        mnk_residual: 7.3037785e-14
+        avg_gflops: 845.4672197
+    -   node: 108
+        mnk: 2.4003283e-12
+        intercept: 3.1007207e-06
+        mnk_residual: 9.2049824e-14
+        avg_gflops: 833.2193666
+    -   node: 109
+        mnk: 2.3659844e-12
+        intercept: 4.9855026e-06
+        mnk_residual: 7.5376538e-14
+        avg_gflops: 845.3141255
+    -   node: 110
+        mnk: 2.5216633e-12
+        intercept: 4.208979e-06
+        mnk_residual: 9.1030596e-14
+        avg_gflops: 793.1272864
+    -   node: 111
+        mnk: 2.3435346e-12
+        intercept: 3.0162554e-06
+        mnk_residual: 8.2716103e-14
+        avg_gflops: 853.4117583
+    -   node: 112
+        mnk: 2.3625423e-12
+        intercept: 3.0665615e-06
+        mnk_residual: 8.647708e-14
+        avg_gflops: 846.5456926
+    -   node: 113
+        mnk: 2.4345145e-12
+        intercept: 3.9602861e-06
+        mnk_residual: 7.9266542e-14
+        avg_gflops: 821.5190433
+    -   node: 114
+        mnk: 2.4548226e-12
+        intercept: 4.3095292e-06
+        mnk_residual: 8.7528518e-14
+        avg_gflops: 814.7228235
+    -   node: 115
+        mnk: 2.3803862e-12
+        intercept: 4.3157538e-06
+        mnk_residual: 7.010545e-14
+        avg_gflops: 840.1997862
+    -   node: 116
+        mnk: 2.478647e-12
+        intercept: 3.8152671e-06
+        mnk_residual: 6.5055364e-14
+        avg_gflops: 806.8918252
+    -   node: 117
+        mnk: 2.3694214e-12
+        intercept: 3.8295364e-06
+        mnk_residual: 9.2023396e-14
+        avg_gflops: 844.0879336
+    -   node: 118
+        mnk: 2.4779769e-12
+        intercept: 4.1238924e-06
+        mnk_residual: 8.672507e-14
+        avg_gflops: 807.1100191
+    -   node: 119
+        mnk: 2.3705578e-12
+        intercept: 3.396493e-06
+        mnk_residual: 8.3532453e-14
+        avg_gflops: 843.6832744
+    -   node: 120
+        mnk: 2.3388582e-12
+        intercept: 4.0854032e-06
+        mnk_residual: 6.3803987e-14
+        avg_gflops: 855.1181113
+    -   node: 121
+        mnk: 2.2473713e-12
+        intercept: 3.752881e-06
+        mnk_residual: 7.5525077e-14
+        avg_gflops: 889.9285951
+    -   node: 122
+        mnk: 2.4271607e-12
+        intercept: 3.1505174e-06
+        mnk_residual: 9.7984064e-14
+        avg_gflops: 824.0080607
+    -   node: 123
+        mnk: 2.4188811e-12
+        intercept: 3.5318058e-06
+        mnk_residual: 7.5470128e-14
+        avg_gflops: 826.8285709
+    -   node: 124
+        mnk: 2.5559593e-12
+        intercept: 3.9706175e-06
+        mnk_residual: 8.3074981e-14
+        avg_gflops: 782.4850733
+    -   node: 125
+        mnk: 2.3463147e-12
+        intercept: 4.6405149e-06
+        mnk_residual: 9.413507e-14
+        avg_gflops: 852.4005798
+    -   node: 126
+        mnk: 2.3776398e-12
+        intercept: 3.9127587e-06
+        mnk_residual: 6.6723567e-14
+        avg_gflops: 841.1703102
+    -   node: 127
+        mnk: 2.4666156e-12
+        intercept: 4.6897661e-06
+        mnk_residual: 8.2183426e-14
+        avg_gflops: 810.8276053
+    -   node: 128
+        mnk: 2.3505264e-12
+        intercept: 3.5819146e-06
+        mnk_residual: 8.4060988e-14
+        avg_gflops: 850.8732293
+    -   node: 129
+        mnk: 2.3758112e-12
+        intercept: 2.9538125e-06
+        mnk_residual: 8.0303889e-14
+        avg_gflops: 841.8177508
+    -   node: 130
+        mnk: 2.3970629e-12
+        intercept: 3.7670488e-06
+        mnk_residual: 6.095758e-14
+        avg_gflops: 834.3544014
+    -   node: 131
+        mnk: 2.4286273e-12
+        intercept: 5.315274e-06
+        mnk_residual: 8.2036764e-14
+        avg_gflops: 823.5104752
+    -   node: 132
+        mnk: 2.4793976e-12
+        intercept: 4.1439778e-06
+        mnk_residual: 6.8058875e-14
+        avg_gflops: 806.6475352
+    -   node: 133
+        mnk: 2.4446075e-12
+        intercept: 3.8784285e-06
+        mnk_residual: 7.7219245e-14
+        avg_gflops: 818.1272462
+    -   node: 134
+        mnk: 2.442113e-12
+        intercept: 4.06522e-06
+        mnk_residual: 8.5068154e-14
+        avg_gflops: 818.9629394
+    -   node: 135
+        mnk: 2.340465e-12
+        intercept: 3.8852312e-06
+        mnk_residual: 7.2251726e-14
+        avg_gflops: 854.5310321
+    -   node: 136
+        mnk: 2.4086796e-12
+        intercept: 4.2200912e-06
+        mnk_residual: 7.206723e-14
+        avg_gflops: 830.3304551
+    -   node: 137
+        mnk: 2.3919468e-12
+        intercept: 2.8435328e-06
+        mnk_residual: 8.861334e-14
+        avg_gflops: 836.1390107
+    -   node: 138
+        mnk: 2.3986389e-12
+        intercept: 3.3638065e-06
+        mnk_residual: 1.0037373e-13
+        avg_gflops: 833.8062114
+    -   node: 139
+        mnk: 2.4793633e-12
+        intercept: 3.2592212e-06
+        mnk_residual: 9.066921e-14
+        avg_gflops: 806.6587032
+    -   node: 140
+        mnk: 2.443674e-12
+        intercept: 4.7152666e-06
+        mnk_residual: 8.2403735e-14
+        avg_gflops: 818.4397643
+    -   node: 141
+        mnk: 2.3741319e-12
+        intercept: 3.5576935e-06
+        mnk_residual: 7.8682494e-14
+        avg_gflops: 842.4131748
+    -   node: 142
+        mnk: 2.4445777e-12
+        intercept: 3.7159235e-06
+        mnk_residual: 9.9875768e-14
+        avg_gflops: 818.1372293
+    -   node: 143
+        mnk: 2.4410867e-12
+        intercept: 3.1059862e-06
+        mnk_residual: 7.2002904e-14
+        avg_gflops: 819.3072515
+    -   node: 144
+        mnk: 2.450971e-12
+        intercept: 4.1254606e-06
+        mnk_residual: 7.7314573e-14
+        avg_gflops: 816.003127
+    -   node: 145
+        mnk: 2.385077e-12
+        intercept: 3.2944338e-06
+        mnk_residual: 7.8744082e-14
+        avg_gflops: 838.5473587
+    -   node: 146
+        mnk: 2.3849656e-12
+        intercept: 3.6068861e-06
+        mnk_residual: 8.7521422e-14
+        avg_gflops: 838.5865051
+    -   node: 147
+        mnk: 2.3495227e-12
+        intercept: 3.0431581e-06
+        mnk_residual: 7.3446172e-14
+        avg_gflops: 851.2367353
+    -   node: 148
+        mnk: 2.4109597e-12
+        intercept: 4.3965129e-06
+        mnk_residual: 1.032861e-13
+        avg_gflops: 829.5451716
+    -   node: 149
+        mnk: 2.2928761e-12
+        intercept: 3.831258e-06
+        mnk_residual: 7.9139444e-14
+        avg_gflops: 872.2669346
+    -   node: 150
+        mnk: 2.4103383e-12
+        intercept: 3.4037461e-06
+        mnk_residual: 7.4510777e-14
+        avg_gflops: 829.759028
+    -   node: 151
+        mnk: 2.3797806e-12
+        intercept: 3.7660204e-06
+        mnk_residual: 7.8837091e-14
+        avg_gflops: 840.4136117
+    -   node: 152
+        mnk: 2.5170235e-12
+        intercept: 4.7486129e-06
+        mnk_residual: 9.7502348e-14
+        avg_gflops: 794.5893305
+    -   node: 153
+        mnk: 2.2828072e-12
+        intercept: 3.9371453e-06
+        mnk_residual: 7.3255259e-14
+        avg_gflops: 876.1142749
+    -   node: 154
+        mnk: 2.2997021e-12
+        intercept: 3.5632945e-06
+        mnk_residual: 8.9185029e-14
+        avg_gflops: 869.6778662
+    -   node: 155
+        mnk: 2.3477518e-12
+        intercept: 3.4884154e-06
+        mnk_residual: 8.9851274e-14
+        avg_gflops: 851.8788062
+    -   node: 156
+        mnk: 2.2722463e-12
+        intercept: 3.0803474e-06
+        mnk_residual: 9.6041054e-14
+        avg_gflops: 880.186263
+    -   node: 157
+        mnk: 2.3729756e-12
+        intercept: 3.6238743e-06
+        mnk_residual: 1.0339288e-13
+        avg_gflops: 842.8236714
+    -   node: 158
+        mnk: 2.3292894e-12
+        intercept: 4.3806434e-06
+        mnk_residual: 7.6670884e-14
+        avg_gflops: 858.6309687
+    -   node: 159
+        mnk: 2.4143816e-12
+        intercept: 4.0019672e-06
+        mnk_residual: 8.9101241e-14
+        avg_gflops: 828.3694761
+    -   node: 160
+        mnk: 2.2632064e-12
+        intercept: 4.1279484e-06
+        mnk_residual: 8.507086e-14
+        avg_gflops: 883.7019756
+    -   node: 161
+        mnk: 2.3905867e-12
+        intercept: 3.6587356e-06
+        mnk_residual: 8.7065965e-14
+        avg_gflops: 836.6147101
+    -   node: 162
+        mnk: 2.337897e-12
+        intercept: 3.3111426e-06
+        mnk_residual: 9.2003864e-14
+        avg_gflops: 855.4696898
+    -   node: 163
+        mnk: 2.4425486e-12
+        intercept: 4.3174761e-06
+        mnk_residual: 8.1950919e-14
+        avg_gflops: 818.8168661
+    -   node: 164
+        mnk: 2.4826173e-12
+        intercept: 2.7015064e-06
+        mnk_residual: 7.8409294e-14
+        avg_gflops: 805.601397
+    -   node: 165
+        mnk: 2.3350022e-12
+        intercept: 3.6649163e-06
+        mnk_residual: 7.2392954e-14
+        avg_gflops: 856.5302558
+    -   node: 166
+        mnk: 2.3791302e-12
+        intercept: 3.7124839e-06
+        mnk_residual: 8.8035233e-14
+        avg_gflops: 840.6433605
+    -   node: 167
+        mnk: 2.3897504e-12
+        intercept: 4.5695105e-06
+        mnk_residual: 7.4788267e-14
+        avg_gflops: 836.9075034
+    -   node: 168
+        mnk: 2.4649839e-12
+        intercept: 3.6094771e-06
+        mnk_residual: 7.8523609e-14
+        avg_gflops: 811.3643253
+    -   node: 169
+        mnk: 2.4342438e-12
+        intercept: 3.0394385e-06
+        mnk_residual: 8.6389488e-14
+        avg_gflops: 821.6103966
+    -   node: 170
+        mnk: 2.3526278e-12
+        intercept: 4.7389777e-06
+        mnk_residual: 7.3238993e-14
+        avg_gflops: 850.1132073
+    -   node: 171
+        mnk: 2.4612121e-12
+        intercept: 3.444189e-06
+        mnk_residual: 7.6181438e-14
+        avg_gflops: 812.6077268
+    -   node: 172
+        mnk: 2.3725109e-12
+        intercept: 4.3148988e-06
+        mnk_residual: 8.2877438e-14
+        avg_gflops: 842.9887536
+    -   node: 173
+        mnk: 2.4486841e-12
+        intercept: 4.0076068e-06
+        mnk_residual: 9.3269588e-14
+        avg_gflops: 816.7652277
+    -   node: 174
+        mnk: 2.5702949e-12
+        intercept: 4.2907922e-06
+        mnk_residual: 8.2422913e-14
+        avg_gflops: 778.1208306
+    -   node: 175
+        mnk: 2.3631052e-12
+        intercept: 3.7375701e-06
+        mnk_residual: 8.0604844e-14
+        avg_gflops: 846.3440425
+    -   node: 176
+        mnk: 2.3016688e-12
+        intercept: 4.4805833e-06
+        mnk_residual: 8.7672648e-14
+        avg_gflops: 868.9347366
+    -   node: 177
+        mnk: 2.3271403e-12
+        intercept: 3.7608417e-06
+        mnk_residual: 8.4872746e-14
+        avg_gflops: 859.4239209
+    -   node: 178
+        mnk: 2.3733529e-12
+        intercept: 3.708954e-06
+        mnk_residual: 6.772267e-14
+        avg_gflops: 842.6896883
+    -   node: 179
+        mnk: 2.5044547e-12
+        intercept: 3.675448e-06
+        mnk_residual: 7.7051322e-14
+        avg_gflops: 798.5770283
+    -   node: 180
+        mnk: 2.228855e-12
+        intercept: 4.2747932e-06
+        mnk_residual: 8.0980946e-14
+        avg_gflops: 897.3217307
+    -   node: 181
+        mnk: 2.360815e-12
+        intercept: 4.2117053e-06
+        mnk_residual: 8.6384119e-14
+        avg_gflops: 847.165075
+    -   node: 182
+        mnk: 2.3602823e-12
+        intercept: 4.6161871e-06
+        mnk_residual: 7.5472779e-14
+        avg_gflops: 847.3562663
+    -   node: 183
+        mnk: 2.4561459e-12
+        intercept: 4.9391635e-06
+        mnk_residual: 7.3285396e-14
+        avg_gflops: 814.2838645
+    -   node: 184
+        mnk: 2.4669908e-12
+        intercept: 4.4377411e-06
+        mnk_residual: 9.4128539e-14
+        avg_gflops: 810.7042958
+    -   node: 185
+        mnk: 2.3879501e-12
+        intercept: 2.7307399e-06
+        mnk_residual: 7.1256017e-14
+        avg_gflops: 837.5384533
+    -   node: 186
+        mnk: 2.4661144e-12
+        intercept: 4.2779487e-06
+        mnk_residual: 8.0546287e-14
+        avg_gflops: 810.9923963
+    -   node: 187
+        mnk: 2.3482587e-12
+        intercept: 3.1632723e-06
+        mnk_residual: 7.1381276e-14
+        avg_gflops: 851.6949053
+    -   node: 188
+        mnk: 2.433249e-12
+        intercept: 4.6596779e-06
+        mnk_residual: 7.9406478e-14
+        avg_gflops: 821.946289
+    -   node: 189
+        mnk: 2.3399819e-12
+        intercept: 2.348261e-06
+        mnk_residual: 8.4071917e-14
+        avg_gflops: 854.7074755
+    -   node: 190
+        mnk: 2.3955165e-12
+        intercept: 3.7386508e-06
+        mnk_residual: 6.5043854e-14
+        avg_gflops: 834.893015
+    -   node: 191
+        mnk: 2.3766395e-12
+        intercept: 3.3557488e-06
+        mnk_residual: 7.9991744e-14
+        avg_gflops: 841.5243462
+    -   node: 192
+        mnk: 2.4081856e-12
+        intercept: 3.2692467e-06
+        mnk_residual: 8.8468377e-14
+        avg_gflops: 830.5007723
+    -   node: 193
+        mnk: 2.3975719e-12
+        intercept: 4.0433506e-06
+        mnk_residual: 8.140128e-14
+        avg_gflops: 834.1772885
+    -   node: 194
+        mnk: 2.2952063e-12
+        intercept: 3.5555231e-06
+        mnk_residual: 7.3864518e-14
+        avg_gflops: 871.3813752
+    -   node: 195
+        mnk: 2.4136401e-12
+        intercept: 4.6350485e-06
+        mnk_residual: 8.387734e-14
+        avg_gflops: 828.6239619
+    -   node: 196
+        mnk: 2.4169386e-12
+        intercept: 4.4063812e-06
+        mnk_residual: 8.3920511e-14
+        avg_gflops: 827.4930885
+    -   node: 197
+        mnk: 2.3654825e-12
+        intercept: 3.9423714e-06
+        mnk_residual: 8.0725804e-14
+        avg_gflops: 845.493478
+    -   node: 198
+        mnk: 2.5170973e-12
+        intercept: 3.1704864e-06
+        mnk_residual: 9.2109362e-14
+        avg_gflops: 794.5660198
+    -   node: 199
+        mnk: 2.3975115e-12
+        intercept: 3.8106435e-06
+        mnk_residual: 9.1865822e-14
+        avg_gflops: 834.1982834
+    -   node: 200
+        mnk: 2.4362359e-12
+        intercept: 4.3729606e-06
+        mnk_residual: 7.9187176e-14
+        avg_gflops: 820.9385585
+    -   node: 201
+        mnk: 2.4249269e-12
+        intercept: 3.2877709e-06
+        mnk_residual: 7.9380539e-14
+        avg_gflops: 824.7671133
+    -   node: 202
+        mnk: 2.5765697e-12
+        intercept: 4.0936761e-06
+        mnk_residual: 7.2545833e-14
+        avg_gflops: 776.2258579
+    -   node: 203
+        mnk: 2.4120053e-12
+        intercept: 4.3823275e-06
+        mnk_residual: 8.3771834e-14
+        avg_gflops: 829.1855593
+    -   node: 204
+        mnk: 2.4064257e-12
+        intercept: 2.9544655e-06
+        mnk_residual: 8.896579e-14
+        avg_gflops: 831.1081359
+    -   node: 205
+        mnk: 2.4858905e-12
+        intercept: 3.8428227e-06
+        mnk_residual: 8.8800366e-14
+        avg_gflops: 804.5406779
+    -   node: 206
+        mnk: 2.4153175e-12
+        intercept: 4.8537262e-06
+        mnk_residual: 9.4683279e-14
+        avg_gflops: 828.0484748
+    -   node: 207
+        mnk: 2.2926873e-12
+        intercept: 3.6507358e-06
+        mnk_residual: 6.6646148e-14
+        avg_gflops: 872.3387454
+    -   node: 208
+        mnk: 2.3194217e-12
+        intercept: 4.790257e-06
+        mnk_residual: 8.5702388e-14
+        avg_gflops: 862.2838862
+    -   node: 209
+        mnk: 2.3834138e-12
+        intercept: 4.7767377e-06
+        mnk_residual: 9.2439065e-14
+        avg_gflops: 839.132522
+    -   node: 210
+        mnk: 2.4679987e-12
+        intercept: 4.6248067e-06
+        mnk_residual: 8.1320572e-14
+        avg_gflops: 810.3732024
+    -   node: 211
+        mnk: 2.4960123e-12
+        intercept: 2.8745931e-06
+        mnk_residual: 8.4997908e-14
+        avg_gflops: 801.2781035
+    -   node: 212
+        mnk: 2.3019769e-12
+        intercept: 4.4593194e-06
+        mnk_residual: 8.6475285e-14
+        avg_gflops: 868.8184519
+    -   node: 213
+        mnk: 2.3695368e-12
+        intercept: 3.9837556e-06
+        mnk_residual: 1.0307862e-13
+        avg_gflops: 844.046827
+    -   node: 214
+        mnk: 2.362384e-12
+        intercept: 3.6511634e-06
+        mnk_residual: 7.5784254e-14
+        avg_gflops: 846.6024077
+    -   node: 215
+        mnk: 2.3574973e-12
+        intercept: 4.8253064e-06
+        mnk_residual: 9.2848125e-14
+        avg_gflops: 848.3572727
+    -   node: 216
+        mnk: 2.4523166e-12
+        intercept: 2.510409e-06
+        mnk_residual: 9.1296338e-14
+        avg_gflops: 815.5553694
+    -   node: 217
+        mnk: 2.2871815e-12
+        intercept: 4.0692806e-06
+        mnk_residual: 7.7715547e-14
+        avg_gflops: 874.438686
+    -   node: 218
+        mnk: 2.4063559e-12
+        intercept: 3.4940133e-06
+        mnk_residual: 7.6471265e-14
+        avg_gflops: 831.1322413
+    -   node: 219
+        mnk: 2.3327631e-12
+        intercept: 3.8639684e-06
+        mnk_residual: 7.5328022e-14
+        avg_gflops: 857.3523948
+    -   node: 220
+        mnk: 2.4042781e-12
+        intercept: 3.719066e-06
+        mnk_residual: 8.1748849e-14
+        avg_gflops: 831.850517
+    -   node: 221
+        mnk: 2.3316037e-12
+        intercept: 4.1002949e-06
+        mnk_residual: 8.7713108e-14
+        avg_gflops: 857.778719
+    -   node: 222
+        mnk: 2.4104248e-12
+        intercept: 3.328261e-06
+        mnk_residual: 7.8724633e-14
+        avg_gflops: 829.7292675
+    -   node: 223
+        mnk: 2.3941875e-12
+        intercept: 3.8195778e-06
+        mnk_residual: 7.7598717e-14
+        avg_gflops: 835.3564733
+    -   node: 224
+        mnk: 2.3783265e-12
+        intercept: 3.9376024e-06
+        mnk_residual: 7.7802358e-14
+        avg_gflops: 840.9274384
+    -   node: 225
+        mnk: 2.2877166e-12
+        intercept: 3.7150153e-06
+        mnk_residual: 7.4547549e-14
+        avg_gflops: 874.2341527
+    -   node: 226
+        mnk: 2.3198577e-12
+        intercept: 3.8730248e-06
+        mnk_residual: 7.8718613e-14
+        avg_gflops: 862.1218287
+    -   node: 227
+        mnk: 2.2861239e-12
+        intercept: 4.244785e-06
+        mnk_residual: 6.3798579e-14
+        avg_gflops: 874.8432055
+    -   node: 228
+        mnk: 2.401382e-12
+        intercept: 2.7091528e-06
+        mnk_residual: 8.4627388e-14
+        avg_gflops: 832.8537418
+    -   node: 229
+        mnk: 2.4119769e-12
+        intercept: 2.9025797e-06
+        mnk_residual: 7.05776e-14
+        avg_gflops: 829.1953469
+    -   node: 230
+        mnk: 2.4032096e-12
+        intercept: 4.6441347e-06
+        mnk_residual: 1.0469885e-13
+        avg_gflops: 832.2203921
+    -   node: 231
+        mnk: 2.3213607e-12
+        intercept: 3.4293405e-06
+        mnk_residual: 9.3986865e-14
+        avg_gflops: 861.5636577
+    -   node: 232
+        mnk: 2.3251084e-12
+        intercept: 3.2138763e-06
+        mnk_residual: 7.0679732e-14
+        avg_gflops: 860.1749316
+    -   node: 233
+        mnk: 2.4267339e-12
+        intercept: 3.917623e-06
+        mnk_residual: 6.7417676e-14
+        avg_gflops: 824.152996
+    -   node: 234
+        mnk: 2.3982794e-12
+        intercept: 4.34915e-06
+        mnk_residual: 6.5505738e-14
+        avg_gflops: 833.9311873
+    -   node: 235
+        mnk: 2.4123002e-12
+        intercept: 2.4606049e-06
+        mnk_residual: 8.8690752e-14
+        avg_gflops: 829.0842201
+    -   node: 236
+        mnk: 2.4391667e-12
+        intercept: 3.9759058e-06
+        mnk_residual: 8.4439579e-14
+        avg_gflops: 819.9521468
+    -   node: 237
+        mnk: 2.4760952e-12
+        intercept: 3.3341572e-06
+        mnk_residual: 7.429258e-14
+        avg_gflops: 807.723401
+    -   node: 238
+        mnk: 2.3678419e-12
+        intercept: 4.2369562e-06
+        mnk_residual: 7.3453435e-14
+        avg_gflops: 844.6509951
+    -   node: 239
+        mnk: 2.4295123e-12
+        intercept: 4.2090152e-06
+        mnk_residual: 7.1467639e-14
+        avg_gflops: 823.210474
+    -   node: 240
+        mnk: 2.4903514e-12
+        intercept: 4.0730661e-06
+        mnk_residual: 9.0036255e-14
+        avg_gflops: 803.099517
+    -   node: 241
+        mnk: 2.3337416e-12
+        intercept: 4.5508269e-06
+        mnk_residual: 8.8520496e-14
+        avg_gflops: 856.9929071
+    -   node: 242
+        mnk: 2.4474798e-12
+        intercept: 3.3290105e-06
+        mnk_residual: 7.2483029e-14
+        avg_gflops: 817.1671096
+    -   node: 243
+        mnk: 2.4344201e-12
+        intercept: 3.4624712e-06
+        mnk_residual: 9.6398967e-14
+        avg_gflops: 821.5509049
+    -   node: 244
+        mnk: 2.461791e-12
+        intercept: 3.6832564e-06
+        mnk_residual: 1.0106298e-13
+        avg_gflops: 812.4166376
+    -   node: 245
+        mnk: 2.5184661e-12
+        intercept: 3.7911928e-06
+        mnk_residual: 9.4499622e-14
+        avg_gflops: 794.1341652
+    -   node: 246
+        mnk: 2.418275e-12
+        intercept: 3.2880832e-06
+        mnk_residual: 8.0366805e-14
+        avg_gflops: 827.0358084
+    -   node: 247
+        mnk: 2.410225e-12
+        intercept: 4.1161139e-06
+        mnk_residual: 8.2747363e-14
+        avg_gflops: 829.7980582
+    -   node: 248
+        mnk: 2.3491762e-12
+        intercept: 3.53202e-06
+        mnk_residual: 8.4189997e-14
+        avg_gflops: 851.362278
+    -   node: 249
+        mnk: 2.3526765e-12
+        intercept: 3.9456394e-06
+        mnk_residual: 7.8446239e-14
+        avg_gflops: 850.0956204
+    -   node: 250
+        mnk: 2.3283815e-12
+        intercept: 3.5599448e-06
+        mnk_residual: 8.7503982e-14
+        avg_gflops: 858.96578
+    -   node: 251
+        mnk: 2.345061e-12
+        intercept: 4.5055058e-06
+        mnk_residual: 8.6059049e-14
+        avg_gflops: 852.8562875
+    -   node: 252
+        mnk: 2.2970368e-12
+        intercept: 4.9097332e-06
+        mnk_residual: 7.4715123e-14
+        avg_gflops: 870.6869701
+    -   node: 253
+        mnk: 2.4686118e-12
+        intercept: 3.6274023e-06
+        mnk_residual: 9.2315365e-14
+        avg_gflops: 810.1719364
+    -   node: 254
+        mnk: 2.5117612e-12
+        intercept: 4.6214785e-06
+        mnk_residual: 9.5139679e-14
+        avg_gflops: 796.254024
+    -   node: 255
+        mnk: 2.3663341e-12
+        intercept: 4.2940667e-06
+        mnk_residual: 8.0173493e-14
+        avg_gflops: 845.1891787
+metadata:
+    granularity: node
+    file_creation_date: 2020-03-25 08:52:24
+    comment: Measures made on cluster dahu between 2020-03-20 18:55:47 and 2020-03-23
+        04:52:45
+
