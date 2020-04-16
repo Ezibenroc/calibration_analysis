@@ -2,6 +2,7 @@ import requests
 import pandas
 import io
 import logging
+from scipy import stats
 import plotnine
 plotnine.options.figure_size = (12, 8)
 from plotnine import *
@@ -142,28 +143,43 @@ def select_after_changelog(df, changelog, nmin=8, nmax=None):
         return result
 
 
-def mark_weird(df, select_func=select_last_n, nb_sigma=2, col='avg_gflops'):
+def mark_weird(df, select_func=select_last_n, confidence=0.95, naive=False, col='avg_gflops'):
+    '''
+    Mark the points of the given columns that are out of the prediction region of given confidence.
+    The confidence should be a number between 0 and 1 (e.g. 0.95 for 95% confidence).
+    If naive is True, then it assumes that the sample variane is exactly equal to the true variance, which results in a
+    tighter prediction region.
+    '''
     df = df.copy()
     NAN = float('NaN')
     df['mu'] = NAN
     df['sigma'] = NAN
+    df['nb_obs'] = NAN
     for i in range(0, len(df)):
         row = df.iloc[i]
         candidates = df[(df['node'] == row['node']) & (df['cpu'] == row['cpu']) & (df['timestamp'] <= row['timestamp'])]
         selected = select_func(candidates)#[col]
         selected = selected[col]
-        df.loc[df.index[i], ('mu', 'sigma')] = selected.mean(), selected.std()
-    df['low_bound']  = df['mu'] - df['sigma']*nb_sigma
-    df['high_bound'] = df['mu'] + df['sigma']*nb_sigma
-    df['weird'] = (df[col] - df['mu']).abs() > nb_sigma*df['sigma']
+        df.loc[df.index[i], ('mu', 'sigma', 'nb_obs')] = selected.mean(), selected.std(), len(selected)
+    if naive:
+        one_side_conf = 1-(1-confidence)/2
+        factor = stats.norm.ppf(one_side_conf)
+    else:
+        factor = stats.f.ppf(confidence, 1, df['nb_obs']-1)*(df['nb_obs']+1)/df['nb_obs']
+        factor = factor**(1/2)
+    df['low_bound']  = df['mu'] - df['sigma']*factor
+    df['high_bound'] = df['mu'] + df['sigma']*factor
+    df['weird'] = (df[col] - df['mu']).abs() > factor*df['sigma']
     df.loc[df['mu'].isna(), 'weird'] = 'NA'
     return df
 
 
 def plot_evolution_node(df, col):
     return ggplot(df) +\
-            aes(x='timestamp', y=col, color='weird') +\
-            geom_point() +\
+            aes(x='timestamp', y=col) +\
+            geom_line() +\
+            geom_point(aes(color='weird'), size=0.5) +\
+            geom_point(df[df.weird == True], aes(color='weird'), size=2) +\
             scale_color_manual({
                 'NA': '#AAAAAA',
                 True: '#FF0000',
