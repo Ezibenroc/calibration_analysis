@@ -110,7 +110,12 @@ def select_last_n(df, n=10):
     return selection
 
 
-def select_first_n_changelog(df, changelog, nmin=8, nmax=20):
+def select_after_changelog(df, changelog, nmin=8, nmax=None):
+    '''
+    Asusmption: df contains data for a single node of a single cluster.
+    Return measures that have been made after the last event regarding this node. It returns at least nmin measures, and
+    at most nmax. If nmax is not specified, it will return all of them.
+    '''
     empty = pandas.DataFrame(columns=df.columns)
     if len(df) == 0:
         return empty
@@ -126,8 +131,11 @@ def select_first_n_changelog(df, changelog, nmin=8, nmax=20):
     if max_change != max_change:  # max_change is NaT (there was no change yet)
         max_change = pandas.to_datetime(0, unit='s')
     df = df[df['timestamp'] >= max_change]
-    # Finally, we take the first N
-    result = df.sort_values(by='timestamp').head(n=nmax)
+    # Finally, we take the first nmax (if nmax is specified)
+    if nmax is not None:
+        result = df.sort_values(by='timestamp').head(n=nmax)
+    else:
+        result = df
     if len(result) < nmin:
         return empty
     else:
